@@ -1,25 +1,27 @@
-import Link from "next/link";
+import { Hero } from "@/components/sections/hero";
+import { About } from "@/components/sections/about";
+import { Skills } from "@/components/sections/skills";
+import { Contact } from "@/components/sections/contact";
+import { Section } from "@/components/ui/section";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center gap-8 px-6">
-      {/* Wordmark */}
-      <h1 className="text-[48px] font-medium tracking-[-1.5px] leading-none font-sans">
-        JStalin<span className="text-plasma">.</span>
-      </h1>
+    <>
+      <Hero />
+      <About />
+      <Skills />
 
-      {/* Subtitle */}
-      <p className="text-ash text-sm">
-        Data Architect &amp; AI Architect — portfolio coming soon
-      </p>
+      {/* Experience — Phase 3 */}
+      <Section id="experience" className="border-t border-[rgba(139,146,165,0.1)]">
+        <p className="text-ash text-sm font-mono">Experience — coming in phase 3</p>
+      </Section>
 
-      {/* Design system link */}
-      <Link
-        href="/design-system"
-        className="border border-[rgba(139,146,165,0.2)] rounded-[8px] px-5 py-2.5 text-sm text-bone hover:border-ash transition-colors duration-150"
-      >
-        View design system →
-      </Link>
-    </main>
+      {/* Projects — Phase 3 */}
+      <Section id="projects" className="bg-carbon border-t border-[rgba(139,146,165,0.1)]">
+        <p className="text-ash text-sm font-mono">Projects — coming in phase 3</p>
+      </Section>
+
+      <Contact />
+    </>
   );
 }

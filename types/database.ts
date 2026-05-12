@@ -31,6 +31,7 @@ export interface Database {
           github_url: string | null
           availability_status: string | null
           hero_metrics: Json
+          profile_image_url: string | null
           updated_at: string
         }
         Insert: {
@@ -44,6 +45,7 @@ export interface Database {
           github_url?: string | null
           availability_status?: string | null
           hero_metrics?: Json
+          profile_image_url?: string | null
           updated_at?: string
         }
         Update: {
@@ -57,6 +59,7 @@ export interface Database {
           github_url?: string | null
           availability_status?: string | null
           hero_metrics?: Json
+          profile_image_url?: string | null
           updated_at?: string
         }
         Relationships: []
