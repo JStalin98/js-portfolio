@@ -4,6 +4,7 @@ import "./globals.css";
 import { Nav } from "@/components/layout/nav";
 import { Footer } from "@/components/layout/footer";
 import { MotionProvider } from "@/components/providers/motion";
+import { Toaster } from "sonner";
 
 const geist = Geist({
   variable: "--font-geist",
@@ -66,6 +67,19 @@ export default function RootLayout({
           <Nav />
           <main>{children}</main>
           <Footer />
+          <Toaster
+            position="bottom-right"
+            theme="dark"
+            toastOptions={{
+              style: {
+                background: "#1A1F2E",
+                border: "0.5px solid rgba(139,146,165,0.3)",
+                color: "#F4F2EC",
+                fontFamily: "var(--font-geist), sans-serif",
+                fontSize: "13px",
+              },
+            }}
+          />
         </MotionProvider>
       </body>
     </html>
