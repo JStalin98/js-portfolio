@@ -127,6 +127,7 @@ export interface Database {
           summary: string | null
           full_content: string | null
           tech_stack: string[]
+          images: string[]
           order: number
           created_at: string
           updated_at: string
@@ -142,6 +143,7 @@ export interface Database {
           summary?: string | null
           full_content?: string | null
           tech_stack?: string[]
+          images?: string[]
           order?: number
           created_at?: string
           updated_at?: string
@@ -157,6 +159,7 @@ export interface Database {
           summary?: string | null
           full_content?: string | null
           tech_stack?: string[]
+          images?: string[]
           order?: number
           created_at?: string
           updated_at?: string
