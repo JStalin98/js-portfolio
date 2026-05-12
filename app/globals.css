@@ -1,0 +1,43 @@
+@import "tailwindcss";
+
+/* ─── Brand CSS variables on :root ──────────────────────────────────── */
+:root {
+  --midnight: #0b1220;
+  --carbon:   #1a1f2e;
+  --ash:      #8b92a5;
+  --bone:     #f4f2ec;
+  --plasma:   #00e5a0;
+}
+
+/* ─── Tailwind v4 brand color tokens ───────────────────────────────── */
+@theme {
+  --color-midnight: #0b1220;
+  --color-carbon:   #1a1f2e;
+  --color-ash:      #8b92a5;
+  --color-bone:     #f4f2ec;
+  --color-plasma:   #00e5a0;
+}
+
+/* ─── Tailwind v4 font tokens (resolved from Next.js CSS vars) ──────── */
+@theme inline {
+  --font-sans: var(--font-geist);
+  --font-mono: var(--font-jetbrains-mono);
+}
+
+/* ─── Base body styles ──────────────────────────────────────────────── */
+body {
+  background-color: var(--midnight);
+  color: var(--bone);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+/* ─── Dot-grid background pattern ──────────────────────────────────── */
+.dot-grid {
+  background-image: radial-gradient(
+    circle,
+    rgba(139, 146, 165, 0.08) 1px,
+    transparent 1px
+  );
+  background-size: 24px 24px;
+}
