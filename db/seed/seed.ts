@@ -35,7 +35,8 @@ async function seedPersonalInfo() {
     location: 'Vera, Spain',
     linkedin_url: 'https://linkedin.com/in/jstalin',
     github_url: 'https://github.com/jstalin',
-    availability_status: 'AVAILABLE Q2 2026',
+    availability_status: 'Open to opportunities',
+    profile_image_url: null,
     hero_metrics: [
       { label: 'Years of experience', value: '8+' },
       { label: 'Projects delivered', value: '30+' },

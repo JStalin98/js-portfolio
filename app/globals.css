@@ -32,6 +32,18 @@ body {
   line-height: 1.7;
 }
 
+/* ─── Smooth anchor scroll (respects prefers-reduced-motion) ─────────── */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Always apply scroll padding so section headings clear the sticky nav */
+html {
+  scroll-padding-top: 72px;
+}
+
 /* ─── Dot-grid background pattern ──────────────────────────────────── */
 .dot-grid {
   background-image: radial-gradient(
