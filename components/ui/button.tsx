@@ -15,6 +15,8 @@ interface ButtonLinkProps {
   href: string;
   children: React.ReactNode;
   className?: string;
+  target?: string;
+  rel?: string;
 }
 
 const variantClasses: Record<Variant, string> = {
@@ -51,10 +53,14 @@ export function ButtonLink({
   href,
   children,
   className = "",
+  target,
+  rel,
 }: ButtonLinkProps) {
   return (
     <Link
       href={href}
+      target={target}
+      rel={rel}
       className={`inline-flex items-center justify-center gap-2 rounded-[8px] transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-plasma focus-visible:outline-offset-2 ${variantClasses[variant]} ${sizeClasses[size]} ${className}`}
     >
       {children}

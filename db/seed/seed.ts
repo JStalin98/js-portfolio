@@ -224,6 +224,10 @@ I proposed and built an open lakehouse on Apache Iceberg (storage on S3, query e
         'AWS', 'Apache Iceberg', 'Apache Kafka', 'Apache Spark', 'dbt',
         'Apache Airflow', 'Snowflake', 'Terraform', 'Python', 'OpenLineage',
       ],
+      images: [
+        'https://placehold.co/1600x900/0B1220/F4F2EC?text=Lakehouse+architecture+overview',
+        'https://placehold.co/1600x900/0B1220/F4F2EC?text=Medallion+layers+%E2%80%94+Bronze+%C2%B7+Silver+%C2%B7+Gold',
+      ],
       order: 0,
     },
     {
@@ -262,6 +266,7 @@ I designed a retrieval-augmented generation (RAG) pipeline using OpenAI GPT-4 as
         'OpenAI API', 'Pinecone', 'LangChain', 'Apache Airflow', 'Python',
         'MLflow', 'FastAPI', 'Docker', 'AWS ECS', 'PostgreSQL',
       ],
+      images: [],
       order: 1,
     },
     {
@@ -300,6 +305,7 @@ Three problems demanded simultaneous attention: (1) the DW was running at 94% st
         'Snowflake', 'dbt', 'Apache Kafka', 'Apache Airflow', 'Python',
         'Fivetran', 'Oracle', 'Terraform', 'Monte Carlo', 'AWS',
       ],
+      images: [],
       order: 2,
     },
     {
@@ -330,6 +336,7 @@ Introduced automated SLA monitoring: if a client's pipeline missed its 06:00 del
         'BigQuery', 'Apache Airflow', 'Python', 'dbt', 'GCP',
         'Cloud Composer', 'Terraform', 'PostgreSQL',
       ],
+      images: [],
       order: 3,
     },
   ]
@@ -381,7 +388,10 @@ A two-stage RAG pipeline: an offline ingestion pipeline and an online query pipe
       ],
       github_url: null,
       demo_url: null,
-      images: [],
+      images: [
+        'https://placehold.co/1600x900/0B1220/F4F2EC?text=RAG+pipeline+architecture',
+        'https://placehold.co/1600x900/0B1220/F4F2EC?text=Retrieval+%E2%80%94+Ranking+%E2%80%94+Generation+stages',
+      ],
       order: 0,
     },
     {

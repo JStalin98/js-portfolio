@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { NavLink } from "./nav-link";
 
 const sections = [
@@ -17,6 +18,8 @@ interface ScrollSpyNavProps {
 }
 
 export function ScrollSpyNav({ mobile = false, onLinkClick }: ScrollSpyNavProps) {
+  const pathname = usePathname();
+  const isHome = pathname === "/";
   const [activeId, setActiveId] = useState<string>("");
 
   useEffect(() => {
@@ -68,9 +71,9 @@ export function ScrollSpyNav({ mobile = false, onLinkClick }: ScrollSpyNavProps)
         {sections.map(({ id, label }) => (
           <li key={id}>
             <NavLink
-              href={`#${id}`}
+              href={isHome ? `#${id}` : `/#${id}`}
               label={label}
-              isActive={activeId === id}
+              isActive={isHome && activeId === id}
               onClick={onLinkClick}
               mobile
             />
@@ -85,9 +88,9 @@ export function ScrollSpyNav({ mobile = false, onLinkClick }: ScrollSpyNavProps)
       {sections.map(({ id, label }) => (
         <li key={id}>
           <NavLink
-            href={`#${id}`}
+            href={isHome ? `#${id}` : `/#${id}`}
             label={label}
-            isActive={activeId === id}
+            isActive={isHome && activeId === id}
           />
         </li>
       ))}

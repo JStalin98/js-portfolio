@@ -3,6 +3,7 @@ import { Geist, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { Nav } from "@/components/layout/nav";
 import { Footer } from "@/components/layout/footer";
+import { MotionProvider } from "@/components/providers/motion";
 
 const geist = Geist({
   variable: "--font-geist",
@@ -61,9 +62,11 @@ export default function RootLayout({
       className={`${geist.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
       <body className="min-h-full bg-midnight text-bone font-sans">
-        <Nav />
-        <main>{children}</main>
-        <Footer />
+        <MotionProvider>
+          <Nav />
+          <main>{children}</main>
+          <Footer />
+        </MotionProvider>
       </body>
     </html>
   );
