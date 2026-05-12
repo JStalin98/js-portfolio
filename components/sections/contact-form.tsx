@@ -2,71 +2,58 @@
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { useState } from "react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import { submitContactForm } from "@/app/actions/contact";
-import { IconSend, IconCheck } from "@tabler/icons-react";
-
-const schema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters"),
-  email: z.string().email("Please enter a valid email"),
-  subject: z.string().min(4, "Subject must be at least 4 characters"),
-  message: z.string().min(20, "Message must be at least 20 characters"),
-});
-
-type FormData = z.infer<typeof schema>;
+import { submitContact } from "@/app/actions/contact";
+import { contactFormSchema, type ContactFormValues } from "@/lib/validation/contact";
+import { IconSend } from "@tabler/icons-react";
 
 const inputClass =
-  "w-full bg-transparent border border-[rgba(139,146,165,0.3)] rounded-[8px] px-4 py-2.5 text-sm text-bone placeholder:text-ash focus:outline-none focus:border-plasma transition-colors duration-150";
+  "w-full bg-transparent border border-[rgba(139,146,165,0.3)] rounded-[8px] px-4 py-2.5 text-sm text-bone placeholder:text-ash focus:outline-none focus:border-plasma transition-colors duration-150 aria-[invalid=true]:border-[rgba(255,107,107,0.6)]";
 
 const labelClass = "block text-[12px] text-ash mb-1.5";
-const errorClass = "mt-1 text-[12px] text-[#ff6b6b]";
+const errorClass = "mt-1 text-[12px] text-[rgba(255,107,107,0.85)]";
 
 export function ContactForm() {
-  const [sent, setSent] = useState(false);
-  const [serverError, setServerError] = useState<string | null>(null);
-
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors, isSubmitting },
-  } = useForm<FormData>({ resolver: zodResolver(schema) });
+  } = useForm<ContactFormValues>({ resolver: zodResolver(contactFormSchema) });
 
-  async function onSubmit(data: FormData) {
-    setServerError(null);
-    const result = await submitContactForm(data);
+  async function onSubmit(data: ContactFormValues) {
+    const result = await submitContact(data);
     if (result.success) {
-      setSent(true);
       reset();
+      toast.success("Thanks — your message is on its way.");
+    } else if (result.error === "Please wait a moment before submitting again") {
+      toast.warning(result.error);
     } else {
-      setServerError(result.error);
+      toast.error("Something went wrong. Try again or email me directly.");
     }
-  }
-
-  if (sent) {
-    return (
-      <div className="flex flex-col items-start gap-3 py-10">
-        <span className="flex items-center gap-2 text-plasma font-mono text-sm">
-          <IconCheck size={18} stroke={1.5} />
-          Message sent
-        </span>
-        <p className="text-[13px] text-ash leading-[1.7]">
-          Thanks for reaching out. I&apos;ll get back to you as soon as possible.
-        </p>
-        <button
-          onClick={() => setSent(false)}
-          className="mt-2 text-[13px] text-ash hover:text-bone underline underline-offset-2 transition-colors duration-150"
-        >
-          Send another message
-        </button>
-      </div>
-    );
   }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-5">
+      {/* Honeypot — hidden from real users, expected to be empty */}
+      <div
+        aria-hidden="true"
+        style={{ position: "absolute", left: "-9999px", width: "1px", height: "1px", overflow: "hidden" }}
+      >
+        <label aria-hidden="true">Leave this field empty</label>
+        <input
+          type="text"
+          tabIndex={-1}
+          autoComplete="off"
+          autoCorrect="off"
+          autoCapitalize="off"
+          spellCheck={false}
+          aria-hidden="true"
+          {...register("website_url")}
+        />
+      </div>
+
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
         <div>
           <label htmlFor="contact-name" className={labelClass}>
@@ -77,10 +64,16 @@ export function ContactForm() {
             type="text"
             autoComplete="name"
             placeholder="Your name"
+            aria-invalid={errors.name ? "true" : undefined}
+            aria-describedby={errors.name ? "contact-name-error" : undefined}
             className={inputClass}
             {...register("name")}
           />
-          {errors.name && <p className={errorClass}>{errors.name.message}</p>}
+          {errors.name && (
+            <p id="contact-name-error" role="alert" className={errorClass}>
+              {errors.name.message}
+            </p>
+          )}
         </div>
 
         <div>
@@ -92,10 +85,16 @@ export function ContactForm() {
             type="email"
             autoComplete="email"
             placeholder="you@example.com"
+            aria-invalid={errors.email ? "true" : undefined}
+            aria-describedby={errors.email ? "contact-email-error" : undefined}
             className={inputClass}
             {...register("email")}
           />
-          {errors.email && <p className={errorClass}>{errors.email.message}</p>}
+          {errors.email && (
+            <p id="contact-email-error" role="alert" className={errorClass}>
+              {errors.email.message}
+            </p>
+          )}
         </div>
       </div>
 
@@ -107,11 +106,15 @@ export function ContactForm() {
           id="contact-subject"
           type="text"
           placeholder="What is this about?"
+          aria-invalid={errors.subject ? "true" : undefined}
+          aria-describedby={errors.subject ? "contact-subject-error" : undefined}
           className={inputClass}
           {...register("subject")}
         />
         {errors.subject && (
-          <p className={errorClass}>{errors.subject.message}</p>
+          <p id="contact-subject-error" role="alert" className={errorClass}>
+            {errors.subject.message}
+          </p>
         )}
       </div>
 
@@ -122,23 +125,25 @@ export function ContactForm() {
         <textarea
           id="contact-message"
           rows={5}
-          placeholder="Tell me about your project or opportunity..."
+          placeholder="Tell me about your project or opportunity…"
+          aria-invalid={errors.message ? "true" : undefined}
+          aria-describedby={errors.message ? "contact-message-error" : undefined}
           className={`${inputClass} resize-none`}
           {...register("message")}
         />
         {errors.message && (
-          <p className={errorClass}>{errors.message.message}</p>
+          <p id="contact-message-error" role="alert" className={errorClass}>
+            {errors.message.message}
+          </p>
         )}
       </div>
-
-      {serverError && <p className={errorClass}>{serverError}</p>}
 
       <Button
         type="submit"
         variant="primary"
         size="md"
         disabled={isSubmitting}
-        className="w-full sm:w-auto disabled:opacity-60 disabled:cursor-not-allowed"
+        className="w-full sm:w-auto disabled:opacity-60 disabled:cursor-not-allowed focus-visible:outline focus-visible:outline-2 focus-visible:outline-plasma focus-visible:outline-offset-2"
       >
         <IconSend size={15} stroke={1.5} />
         {isSubmitting ? "Sending…" : "Send message"}

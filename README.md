@@ -47,7 +47,20 @@ pnpm seed
 
 The seed script is idempotent: running it again updates existing records without creating duplicates.
 
-### 4. Start the development server
+### 4. Contact form (Resend)
+
+The contact form stores submissions in Supabase and sends an email notification via [Resend](https://resend.com).
+
+| Variable | Description |
+|---|---|
+| `RESEND_API_KEY` | API key from Resend dashboard (Settings → API Keys) |
+| `ADMIN_EMAIL` | The address that receives new contact notifications |
+
+The default `from` address is `onboarding@resend.dev` (Resend's shared domain). To switch to a custom verified domain later:
+1. Add and verify your domain in the Resend dashboard (Domains).
+2. Update the `from` field in `app/actions/contact.ts` to e.g. `"JStalin portfolio <hello@yourdomain.com>"`.
+
+### 5. Start the development server
 
 ```bash
 pnpm dev
