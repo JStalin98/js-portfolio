@@ -5,6 +5,9 @@ import { Nav } from "@/components/layout/nav";
 import { Footer } from "@/components/layout/footer";
 import { MotionProvider } from "@/components/providers/motion";
 import { Toaster } from "sonner";
+import { getAdminStatus } from "@/lib/auth/get-admin-status";
+import { AdminProvider } from "@/components/admin/admin-provider";
+import { AdminToolbar } from "@/components/admin/admin-toolbar";
 
 const geist = Geist({
   variable: "--font-geist",
@@ -52,35 +55,41 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const { isAdmin, userEmail } = await getAdminStatus();
+
   return (
     <html
       lang="en"
+      data-scroll-behavior="smooth"
       className={`${geist.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
       <body className="min-h-full bg-midnight text-bone font-sans">
-        <MotionProvider>
-          <Nav />
-          <main>{children}</main>
-          <Footer />
-          <Toaster
-            position="bottom-right"
-            theme="dark"
-            toastOptions={{
-              style: {
-                background: "#1A1F2E",
-                border: "0.5px solid rgba(139,146,165,0.3)",
-                color: "#F4F2EC",
-                fontFamily: "var(--font-geist), sans-serif",
-                fontSize: "13px",
-              },
-            }}
-          />
-        </MotionProvider>
+        <AdminProvider isAdmin={isAdmin} userEmail={userEmail}>
+          <MotionProvider>
+            <Nav />
+            <main>{children}</main>
+            <Footer />
+            <Toaster
+              position="bottom-right"
+              theme="dark"
+              toastOptions={{
+                style: {
+                  background: "#1A1F2E",
+                  border: "0.5px solid rgba(139,146,165,0.3)",
+                  color: "#F4F2EC",
+                  fontFamily: "var(--font-geist), sans-serif",
+                  fontSize: "13px",
+                },
+              }}
+            />
+            <AdminToolbar />
+          </MotionProvider>
+        </AdminProvider>
       </body>
     </html>
   );

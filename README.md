@@ -78,3 +78,31 @@ Open [http://localhost:3000](http://localhost:3000).
 | `pnpm build` | Production build |
 | `pnpm lint` | Run ESLint |
 | `pnpm seed` | Populate Supabase with placeholder content |
+
+---
+
+## Admin access
+
+The site has a single admin user managed entirely through the Supabase Auth dashboard. There is no public sign-up flow.
+
+### Signing in
+
+Navigate to `/login` (not linked from the public site). Enter the admin email and password. On success you are redirected to `/` and the floating admin toolbar appears bottom-right.
+
+### Adding or resetting credentials
+
+1. Open your project in [app.supabase.com](https://app.supabase.com).
+2. Go to **Authentication** → **Users**.
+3. To add a new admin: click **Add user** → **Create new user**, enter email and password.
+4. To reset a password: click the user row → **Send password recovery** email, or set a new password directly from the user detail page.
+
+### No public sign-up
+
+The Supabase project has sign-ups disabled. Only users created manually via the Supabase dashboard can authenticate. Do not enable public sign-up for this project.
+
+### How admin state works
+
+- `proxy.ts` runs on every request and refreshes the Supabase session cookie so Server Components always read up-to-date auth state.
+- `lib/auth/get-admin-status.ts` is called in `app/layout.tsx` and passes `isAdmin` + `userEmail` as props to `AdminProvider`.
+- Client Components read admin state via the `useAdmin()` hook — no client-side auth calls, no flash.
+- The admin toolbar and all edit controls are conditionally rendered only when `isAdmin === true`. Non-admins receive a byte-identical public view.
