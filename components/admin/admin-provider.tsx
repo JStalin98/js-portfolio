@@ -16,6 +16,8 @@ interface AdminContextValue {
   userEmail: string | null
   isEditingMode: boolean
   toggleEditingMode: () => void
+  isAnySlideOverOpen: boolean
+  setSlideOverOpen: (open: boolean) => void
 }
 
 const AdminContext = createContext<AdminContextValue>({
@@ -23,6 +25,8 @@ const AdminContext = createContext<AdminContextValue>({
   userEmail: null,
   isEditingMode: false,
   toggleEditingMode: () => {},
+  isAnySlideOverOpen: false,
+  setSlideOverOpen: () => {},
 })
 
 interface AdminProviderProps {
@@ -35,6 +39,7 @@ export function AdminProvider({ isAdmin, userEmail, children }: AdminProviderPro
   // Default: editing mode on when admin is present.
   // Will be overridden on mount by localStorage value if one exists.
   const [isEditingMode, setIsEditingMode] = useState(isAdmin)
+  const [isAnySlideOverOpen, setSlideOverOpen] = useState(false)
 
   // Sync with localStorage after mount so SSR and client agree initially.
   useEffect(() => {
@@ -54,7 +59,7 @@ export function AdminProvider({ isAdmin, userEmail, children }: AdminProviderPro
   }, [])
 
   return (
-    <AdminContext.Provider value={{ isAdmin, userEmail, isEditingMode, toggleEditingMode }}>
+    <AdminContext.Provider value={{ isAdmin, userEmail, isEditingMode, toggleEditingMode, isAnySlideOverOpen, setSlideOverOpen }}>
       {children}
     </AdminContext.Provider>
   )

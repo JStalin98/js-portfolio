@@ -17,9 +17,15 @@ export function Section({ id, children, className = "" }: SectionProps) {
   );
 }
 
-export function SectionHeading({ children }: { children: React.ReactNode }) {
+export function SectionHeading({
+  children,
+  className = '',
+}: {
+  children: React.ReactNode
+  className?: string
+}) {
   return (
-    <h2 className="text-[22px] font-medium tracking-[-0.5px] text-bone mb-10 md:mb-14">
+    <h2 className={`text-[22px] font-medium tracking-[-0.5px] text-bone mb-10 md:mb-14 ${className}`}>
       {children}
     </h2>
   );

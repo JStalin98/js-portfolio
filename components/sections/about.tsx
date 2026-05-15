@@ -3,6 +3,7 @@ import { Section, SectionHeading } from "@/components/ui/section";
 import { MotionSection, MotionItem } from "@/components/ui/motion-section";
 import Image from "next/image";
 import type { QuickFact } from "@/types/database";
+import { EditAboutLayer } from "@/components/admin/edit-about-panel";
 
 function ProfilePhoto({ url, name }: { url: string | null; name: string | null }) {
   const initials = (name ?? "JS")
@@ -54,23 +55,41 @@ export async function About() {
     .single();
 
   const quickFacts = (about?.quick_facts as QuickFact[] | null) ?? [];
-  const paragraphs = (about?.content ?? "")
-    .split(/\n\n+/)
-    .filter((p) => p.trim().length > 0);
+
+  // Bio: if content looks like HTML (from Tiptap), render as HTML.
+  // Otherwise fall back to plain-text paragraph splitting for legacy seed data.
+  const rawContent = about?.content ?? "";
+  const isHtml = rawContent.trimStart().startsWith("<");
+  const paragraphs = isHtml
+    ? []
+    : rawContent.split(/\n\n+/).filter((p) => p.trim().length > 0);
 
   return (
     <Section id="about">
       <MotionSection>
         <MotionItem>
-          <SectionHeading>About</SectionHeading>
+          <div className="flex items-center gap-3 mb-10 md:mb-14">
+            <SectionHeading className="mb-0">About</SectionHeading>
+            <EditAboutLayer initialData={about ?? null} />
+          </div>
         </MotionItem>
 
         <div className="grid grid-cols-1 md:grid-cols-[1fr_280px] gap-10 lg:gap-16">
+
           {/* Left: bio + quick facts */}
           <div>
             <MotionItem>
               <div className="space-y-4">
-                {paragraphs.length > 0 ? (
+                {isHtml ? (
+                  rawContent.trim().length > 0 ? (
+                    <div
+                      className="about-prose"
+                      dangerouslySetInnerHTML={{ __html: rawContent }}
+                    />
+                  ) : (
+                    <p className="text-ash text-sm">Bio coming soon.</p>
+                  )
+                ) : paragraphs.length > 0 ? (
                   paragraphs.map((p, i) => (
                     <p key={i} className="text-[14px] text-bone leading-[1.7]">
                       {p.trim()}

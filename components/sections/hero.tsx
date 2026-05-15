@@ -5,6 +5,7 @@ import { DotGrid } from "@/components/ui/dot-grid";
 import { MotionOnMount } from "@/components/ui/motion-section";
 import type { HeroMetric } from "@/types/database";
 import { IconDownload, IconArrowDown } from "@tabler/icons-react";
+import { EditPersonalInfoLayer } from "@/components/admin/edit-personal-info-panel";
 
 export async function Hero() {
   const supabase = await createClient();
@@ -16,8 +17,9 @@ export async function Hero() {
   const metrics = (info?.hero_metrics as HeroMetric[] | null) ?? [];
 
   return (
-    <section className="relative min-h-[100svh] flex items-center pt-16">
+    <section className="relative group min-h-[100svh] flex items-center pt-16">
       <DotGrid />
+      <EditPersonalInfoLayer initialData={info ?? null} />
 
       <div className="relative z-10 mx-auto max-w-[1280px] px-6 md:px-10 lg:px-16 py-20 md:py-28 lg:py-32 w-full">
         {/* Availability pill — fastest, delay 0 */}

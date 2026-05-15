@@ -106,3 +106,7 @@ The Supabase project has sign-ups disabled. Only users created manually via the 
 - `lib/auth/get-admin-status.ts` is called in `app/layout.tsx` and passes `isAdmin` + `userEmail` as props to `AdminProvider`.
 - Client Components read admin state via the `useAdmin()` hook — no client-side auth calls, no flash.
 - The admin toolbar and all edit controls are conditionally rendered only when `isAdmin === true`. Non-admins receive a byte-identical public view.
+
+### Editing content inline
+
+Once logged in, enable editing mode with the toggle in the floating admin toolbar. A pencil icon appears on each editable section (Hero and About). Click it to open a slide-over panel on the right. Make changes and click **Save** — changes persist immediately and become visible to visitors on their next page load.
